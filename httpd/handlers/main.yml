@@ -1,0 +1,23 @@
+---
+# handlers file for httpd
+
+ - name: Start httpd
+   service:
+      name: httpd
+      state: started
+
+ - name: Reload httpd
+   service:
+      name: httpd
+      state: restarted
+
+ - name: Start firewalld
+   service:
+      name: firewalld
+      state: started
+
+ - name: Restart firewalld
+   service:
+      name: firewalld
+      state: restarted
+

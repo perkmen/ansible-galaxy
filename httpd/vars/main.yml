@@ -1,0 +1,5 @@
+---
+# vars file for httpd
+
+webroot: /var/www/html/mywebsite.com/public
+

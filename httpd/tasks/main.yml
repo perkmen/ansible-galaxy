@@ -1,0 +1,44 @@
+---
+# tasks file for httpd
+
+#- hosts: remote
+#  user: root
+#  tasks:
+- name: Install httpd
+  yum:
+     name: httpd
+     state: installed
+     update_cache: true
+  notify:  # Handler named "Start httpd" runs if installation is success. Notify does not run if httpd is already installed.
+     - Start httpd
+
+- name: Create Web Root
+  file:
+     path: '{{ webroot }}'
+     mode: 0775
+     state: directory
+     owner: apache
+     group: apache
+
+- name: Copy index.html to webroot
+  copy:
+     src: index.html
+     dest: '{{ webroot }}'
+     owner: apache
+     group: apache
+     mode: 0644
+     backup: yes
+
+- name: Close firewalld service 
+  service: 
+      name: firewalld
+      state: stopped
+
+- name: Allow access on port 80 
+  firewalld: 
+     zone: public
+     port: 80/tcp
+     state: enabled
+     permanent: true
+  notify:
+     - Restart firewalld
